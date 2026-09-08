@@ -126,7 +126,7 @@ async def stream_answer(
         buffer = ""
         cite_regex = re.compile(r'\s*\[cite:(\d+):([^\]]*)\]\s*')
 
-        async with httpx.AsyncClient(timeout=httpx.Timeout(15.0, connect=5.0)) as client:
+        async with httpx.AsyncClient(timeout=httpx.Timeout(180.0, connect=5.0)) as client:
             max_retries = 3
             for attempt in range(max_retries):
                 async with client.stream("POST", ollama_url, json=payload) as response:
