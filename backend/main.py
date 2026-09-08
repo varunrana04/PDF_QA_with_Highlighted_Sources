@@ -42,8 +42,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from collections import OrderedDict
+
 # ── In-memory session store  doc_id → {parsed, index} ────────────────────────
-sessions: dict[str, dict] = {}
+# Use OrderedDict as a simple LRU cache to prevent severe memory leaks under load.
+MAX_SESSIONS = 50
+sessions: OrderedDict[str, dict] = OrderedDict()
 
 
 # ── Upload ────────────────────────────────────────────────────────────────────
@@ -54,8 +58,8 @@ async def upload_pdf(request: Request, file: UploadFile = File(...)):
     Parse + index a PDF. Returns doc_id for subsequent requests.
     Fails gracefully on corrupted, oversized, or scanned PDFs.
     """
-    # 1. MIME Type check
-    if file.content_type != "application/pdf":
+    # 1. MIME Type check (Relaxed to allow Chrome/Edge x-pdf)
+    if file.content_type not in ["application/pdf", "application/x-pdf"]:
         raise HTTPException(415, "Only application/pdf is supported.")
 
     # 2. Early Content-Length check (from headers)
@@ -97,12 +101,19 @@ async def upload_pdf(request: Request, file: UploadFile = File(...)):
         raise HTTPException(422, str(e))
 
     doc_id = str(uuid.uuid4())
+    
+    if len(sessions) >= MAX_SESSIONS:
+        # Evict oldest
+        sessions.popitem(last=False)
+        
     sessions[doc_id] = {
         "parsed": parsed,
         "index": index,
         "raw_bytes": contents,
         "filename": file.filename or "document.pdf",
     }
+    # Move to end (most recently used)
+    sessions.move_to_end(doc_id)
 
     return {
         "doc_id": doc_id,
