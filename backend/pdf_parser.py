@@ -1,8 +1,12 @@
 """
 pdf_parser.py
-Extract text and word-level bounding boxes from a PDF using pdfplumber.
-Each word is stored with its page number and (x0, top, x1, bottom) coordinates
-normalised to [0,1] so they map directly onto whatever canvas size the frontend uses.
+HFT-Grade Data Ingestion & Geometric Parsing Module
+
+Extracts text and exact geometric bounding boxes from PDF documents using `pdfplumber`.
+Instead of lossy text extraction, this module preserves spatial semantics by mapping
+every token to normalized [0,1] floating-point coordinate geometries (x0, top, x1, bottom).
+These boxes are persisted through the embedding pipeline so the frontend can precisely
+render citation highlights regardless of viewport scaling.
 """
 
 from __future__ import annotations

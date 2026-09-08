@@ -1,11 +1,12 @@
 """
 qa_engine.py
-Builds the prompt from retrieved chunks, calls Ollama local LLM,
-and streams the answer as SSE events.
+LLM Controller & Generative Synthesis Module
 
-Citation format in LLM response: [CITE:chunk_id:page_num]
-We parse these out and include them in the SSE stream so the frontend
-can draw highlights as the answer arrives.
+Constructs rigid context-bound prompts using retrieved FAISS chunks and interfaces
+with Google Gemini to synthesize exact answers. 
+To prevent hallucination, the generation boundary is tightly sealed.
+It parses citation arrays from the generative output and extracts the
+linked geometrical bounding boxes for the frontend to render.
 """
 
 import json
