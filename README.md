@@ -26,7 +26,7 @@ graph TD
     
     subgraph Inference & Retrieval
         D[User Query] -->|all-MiniLM-L6-v2| C
-        C -->|Top-K Chunks + BBox Metadata| E("Ollama (Llama 3) LLM")
+        C -->|Top-K Chunks + BBox Metadata| E["Ollama (Llama 3) LLM"]
     end
     
     subgraph Client
