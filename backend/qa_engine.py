@@ -117,7 +117,7 @@ async def stream_answer(
             ollama_url = "http://localhost:11434/api/generate"
             
         payload = {
-            "model": "llama3.1",
+            "model": "deepseek-r1",
             "system": SYSTEM_PROMPT,
             "prompt": prompt,
             "stream": True,

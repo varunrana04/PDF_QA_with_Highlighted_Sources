@@ -209,7 +209,20 @@ export default function QuestionPanel({ docId, onCitations, onFlashCitation, pag
           <div style={styles.answerText}>
             {answerSegments.map((seg, i) => {
               if (seg.type === 'text') {
-                return <span key={i}>{seg.content}</span>;
+                const parts = seg.content.split(/(<think>|<\/think>)/g);
+                let isThinking = false;
+                return (
+                  <span key={i}>
+                    {parts.map((part, idx) => {
+                      if (part === '<think>') { isThinking = true; return null; }
+                      if (part === '</think>') { isThinking = false; return null; }
+                      if (isThinking) {
+                        return <span key={idx} style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.9em', display: 'block', borderLeft: '2px solid var(--border)', paddingLeft: '8px', marginBottom: '8px', whiteSpace: 'pre-wrap' }}>{part}</span>;
+                      }
+                      return <span key={idx}>{part}</span>;
+                    })}
+                  </span>
+                );
               } else if (seg.type === 'cite') {
                 // Find citation index (1-based)
                 const citIdx = citations.findIndex(c => c.chunk_id === seg.chunk_id);
