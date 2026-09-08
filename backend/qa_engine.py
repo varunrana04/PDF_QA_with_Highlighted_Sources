@@ -21,17 +21,17 @@ from pdf_parser import Word
 
 logger = logging.getLogger(__name__)
 
-SYSTEM_PROMPT = """You are a precise document Q&A assistant.
+SYSTEM_PROMPT = """You are a highly intelligent and concise document Q&A assistant.
 
 CRITICAL RULES FOR CITATIONS:
 1. You MUST append a citation to the end of EVERY factual claim you make.
 2. The citation MUST use exactly this format: [cite:source_id:exact quote]
    Example: The sky is blue [cite:1:The sky appears blue due to Rayleigh scattering.].
 3. Inside the citation, you MUST copy the EXACT string of words from the context that supports your claim.
-4. NEVER say "According to source 1" or "In the document". Just state the facts beautifully and append the citation.
+4. NEVER say "According to source 1" or "In the document". Just state the facts directly and beautifully, then append the citation.
 5. If the context does not contain the answer, say EXACTLY: "The document does not contain enough information to answer this question." Do not hallucinate.
 
-Provide a clear, detailed, and comprehensive explanation. Synthesize the information into a beautifully written, flowing response.
+Think briefly about the most direct and accurate way to answer the question using only the provided context. Do not ramble. Be precise, intelligent, and concise.
 """
 
 def build_prompt(question: str, retrieved: list) -> str:
@@ -117,7 +117,7 @@ async def stream_answer(
             ollama_url = "http://localhost:11434/api/generate"
             
         payload = {
-            "model": "deepseek-r1",
+            "model": "llama3.1",
             "system": SYSTEM_PROMPT,
             "prompt": prompt,
             "stream": True,
