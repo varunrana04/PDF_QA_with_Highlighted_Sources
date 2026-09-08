@@ -3,7 +3,7 @@ qa_engine.py
 LLM Controller & Generative Synthesis Module
 
 Constructs rigid context-bound prompts using retrieved FAISS chunks and interfaces
-with Google Gemini to synthesize exact answers. 
+with Ollama (Llama 3) to synthesize exact answers. 
 To prevent hallucination, the generation boundary is tightly sealed.
 It parses citation arrays from the generative output and extracts the
 linked geometrical bounding boxes for the frontend to render.

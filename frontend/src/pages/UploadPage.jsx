@@ -99,7 +99,7 @@ export default function UploadPage({ onUploaded }) {
         {[
           ['Exact highlights', 'Words highlighted directly on the PDF — not page numbers'],
           ['Multi-page citations', 'Answers spanning multiple pages are all highlighted'],
-          ['Streaming answers', 'Response tokens appear in real time as Gemini generates'],
+          ['Streaming answers', 'Response tokens appear in real time as Ollama generates'],
           ['Honest refusals', 'Says "not found" instead of guessing from outside the document'],
         ].map(([title, desc]) => (
           <div key={title} style={styles.feature}>

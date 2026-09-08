@@ -13,7 +13,7 @@ The PDF QA System is a standard Retrieval-Augmented Generation (RAG) web applica
 3. **Retrieval Engine (FAISS + HuggingFace)**:
    - Extracts semantic embeddings from text chunks.
    - Performs low-latency similarity searches.
-4. **Generator (Google Gemini)**:
+4. **Generator (Ollama (Llama 3))**:
    - Synthesizes the final answer using strictly the context retrieved by FAISS.
 
 ## Data Flow
